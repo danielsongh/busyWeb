@@ -10,8 +10,14 @@ import UIKit
 import AVFoundation
 import WebKit
 
-class ViewController: UIViewController, WKNavigationDelegate, UITextFieldDelegate {
-
+class ViewController: UIViewController, WKNavigationDelegate, UISearchBarDelegate {
+/*
+    enum searchBarState {
+        
+        case hidden, notHidden
+        
+    }
+  */
     @IBOutlet weak var cameraContainer: UIView!
     @IBOutlet weak var webContainer: UIView!
     
@@ -20,8 +26,11 @@ class ViewController: UIViewController, WKNavigationDelegate, UITextFieldDelegat
     @IBOutlet weak var forwardButton: UIBarButtonItem!
     @IBOutlet weak var progressBar: UIProgressView!
     @IBOutlet weak var slider: UISlider!
-    @IBOutlet weak var textField: UITextField!
     @IBOutlet weak var toolBarView: UIToolbar!
+    
+    @IBOutlet weak var urlButton: UIBarButtonItem!
+    @IBOutlet weak var searchBar: UISearchBar!
+    @IBOutlet weak var openMenu: UIBarButtonItem!
     
     
     var session: AVCaptureSession?
@@ -30,22 +39,20 @@ class ViewController: UIViewController, WKNavigationDelegate, UITextFieldDelegat
     var output: AVCaptureOutput?
     var previewLayer: AVCaptureVideoPreviewLayer!
     
-    
     var webView: WKWebView!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupSession()
+        //setupSession()
+        
+        
         backButton.isEnabled = false
         forwardButton.isEnabled = false
-        
+
+        setupSearchBar()
     }
-    override var prefersStatusBarHidden: Bool{
-        get{
-            return true
-        }
-    }
-    
+
     
     override func viewDidAppear(_ animated: Bool) {
        
@@ -56,8 +63,9 @@ class ViewController: UIViewController, WKNavigationDelegate, UITextFieldDelegat
         webView.addObserver(self, forKeyPath: "loading", options: .new, context: nil)
         webView.addObserver(self, forKeyPath: "estimatedProgress", options: .new, context: nil)
         self.webView.navigationDelegate = self
-
-        webView.frame = CGRect(x: 0, y: 0, width: webContainer.frame.width, height: 621)
+        searchBar.delegate = self
+        webView.frame = CGRect(x: 0, y: 0, width: webContainer.frame.width, height: webContainer.frame.height - (toolBarView.frame.height + progressBar.frame.height))
+        print(webView.frame.height)
         webContainer.insertSubview(webView, aboveSubview: progressBar)
 
 
@@ -103,9 +111,16 @@ class ViewController: UIViewController, WKNavigationDelegate, UITextFieldDelegat
         
         
         session?.startRunning()
-        
     }
  
+    func setupSearchBar(){
+        print("do nothing")
+    }
+    
+        
+        
+    
+   
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         if ( keyPath == "loading"){
             backButton.isEnabled = webView.canGoBack
@@ -117,6 +132,12 @@ class ViewController: UIViewController, WKNavigationDelegate, UITextFieldDelegat
         }
     }
     
+    override var prefersStatusBarHidden: Bool{
+        get{
+            return true
+        }
+    }
+    
     
     /*
     @IBAction func refresh(_ sender: AnyObject) {
@@ -124,6 +145,18 @@ class ViewController: UIViewController, WKNavigationDelegate, UITextFieldDelegat
         let request = URLRequest(url:webView.url!)
         webView.load(request)
     }*/
+    
+    @IBAction func urlButtonPressed(_ sender: AnyObject) {
+        
+        if(searchBar.isHidden){
+            searchBar.isHidden = false
+            searchBar.becomeFirstResponder()
+        }
+        else{
+            searchBar.isHidden = true
+        }
+    }
+    
     @IBAction func back(_ sender: AnyObject) {
         webView.goBack()
     }
@@ -148,13 +181,58 @@ class ViewController: UIViewController, WKNavigationDelegate, UITextFieldDelegat
         progressBar.setProgress(0.0, animated: false)
     }
     
-    
-   /* func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-    urlField.resignFirstResponder()
-    var textFieldRequest = URLRequest(url: URL(string: textField.text!)!)
-    webView.load(textFieldRequest)
-    return false
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        
+            searchBar.resignFirstResponder()
+            let text = "http://" + searchBar.text!
+            let url = URL(string: text)
+            let req = URLRequest(url: url!)
+            webView!.load(req)
     }
-*/
+    
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        searchBar.showsCancelButton = true
+        UIView.animate(withDuration: 0.5, animations: {
+                searchBar.sizeToFit()
+            }
+        )
+        searchBar.showsCancelButton = true
+
+        
+    }
+    
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        searchBar.showsCancelButton = false
+        UIView.animate(withDuration: 0.5, animations: {
+            var searchBarFrame = searchBar.frame
+            searchBarFrame.size.height = 22
+            searchBar.frame = searchBarFrame
+            }
+        )
+        searchBar.showsCancelButton = false
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.showsCancelButton = false
+        searchBar.resignFirstResponder()
+    }
+    
+    
+    /*
+    func updateUI(for state: AudioState){
+        switch(state){
+        case .Stopped:
+            recordButton.enabled = true
+            stopButton.enabled = false
+        case .Recording:
+            recordButton.enabled = false
+            stopButton.enabled = true
+        default:
+            break
+        }
+    }
+    */
+
+
 }
 

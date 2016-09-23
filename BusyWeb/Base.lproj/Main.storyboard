@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="jTP-mC-XlH">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="i5q-NO-G9D">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
@@ -36,25 +36,22 @@
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                         <items>
-                                            <barButtonItem style="plain" id="p01-cQ-Wkz">
-                                                <textField key="customView" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" id="Sbh-46-MAB">
-                                                    <rect key="frame" x="16" y="7" width="48" height="30"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <nil key="textColor"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits"/>
-                                                </textField>
-                                            </barButtonItem>
-                                            <barButtonItem width="35" style="plain" systemItem="fixedSpace" id="6G2-Io-gcb"/>
                                             <barButtonItem style="plain" id="U1p-Vd-B1x">
                                                 <slider key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minValue="0.29999999999999999" maxValue="1" id="fCH-Oh-MZP">
-                                                    <rect key="frame" x="109" y="7" width="118" height="31"/>
+                                                    <rect key="frame" x="14" y="7" width="118" height="31"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <connections>
                                                         <action selector="slider:" destination="i5q-NO-G9D" eventType="valueChanged" id="5cq-e5-LMA"/>
                                                     </connections>
                                                 </slider>
                                             </barButtonItem>
+                                            <barButtonItem width="42" style="plain" systemItem="fixedSpace" id="0pd-Z7-Wgr"/>
+                                            <barButtonItem title="url" id="4Ea-zI-Zra">
+                                                <connections>
+                                                    <action selector="urlButtonPressed:" destination="i5q-NO-G9D" id="rq4-9l-8Sp"/>
+                                                </connections>
+                                            </barButtonItem>
+                                            <barButtonItem width="42" style="plain" systemItem="fixedSpace" id="9qd-ah-nvf"/>
                                             <barButtonItem title="&lt;" id="j8g-ns-wCp">
                                                 <connections>
                                                     <action selector="back:" destination="i5q-NO-G9D" id="eb1-3s-srL"/>
@@ -68,20 +65,30 @@
                                             </barButtonItem>
                                         </items>
                                     </toolbar>
+                                    <searchBar hidden="YES" contentMode="redraw" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3eG-8y-Ecc">
+                                        <frame key="frameInset" height="44"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="URL" returnKeyType="go"/>
+                                        <scopeButtonTitles>
+                                            <string>Title</string>
+                                            <string>Title</string>
+                                        </scopeButtonTitles>
+                                    </searchBar>
                                 </subviews>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" id="Y00-ug-ZWE"/>
                     <connections>
                         <outlet property="backButton" destination="j8g-ns-wCp" id="1Dl-TG-Q6c"/>
                         <outlet property="cameraContainer" destination="NoG-JK-xmf" id="qz4-YI-C3V"/>
                         <outlet property="forwardButton" destination="cMP-iw-Sv1" id="oih-2Z-t2B"/>
                         <outlet property="progressBar" destination="HJy-8Y-X6V" id="fkY-4d-crG"/>
+                        <outlet property="searchBar" destination="3eG-8y-Ecc" id="ds1-L9-iKZ"/>
                         <outlet property="slider" destination="fCH-Oh-MZP" id="TPG-VB-Cfq"/>
                         <outlet property="toolBarView" destination="ZiV-Oe-2qE" id="Yhe-0V-RNx"/>
+                        <outlet property="urlButton" destination="4Ea-zI-Zra" id="5gh-sN-hsb"/>
                         <outlet property="webContainer" destination="dqi-Ys-G2D" id="5Pn-og-5NT"/>
                     </connections>
                 </viewController>
@@ -89,23 +96,33 @@
             </objects>
             <point key="canvasLocation" x="2200.8000000000002" y="-219.04047976011995"/>
         </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="nJ5-dH-TG1">
+        <!--Table View Controller-->
+        <scene sceneID="rSK-sy-FZG">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="jTP-mC-XlH" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" hidden="YES" contentMode="scaleToFill" misplaced="YES" id="yBl-dc-Rdm">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="i5q-NO-G9D" kind="relationship" relationship="rootViewController" id="cxA-1s-dUY"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="izf-Uk-vjw" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tableViewController id="xHt-HC-jUI" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="fJK-mO-pgA">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="GJG-eY-kzT">
+                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="GJG-eY-kzT" id="kpb-sZ-FCX">
+                                    <frame key="frameInset" width="375" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="xHt-HC-jUI" id="Phs-Oc-hRi"/>
+                            <outlet property="delegate" destination="xHt-HC-jUI" id="8fm-jj-iiv"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jX0-jA-Fo4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1261.5999999999999" y="-219.04047976011995"/>
+            <point key="canvasLocation" x="3156" y="-219"/>
         </scene>
     </scenes>
 </document>
